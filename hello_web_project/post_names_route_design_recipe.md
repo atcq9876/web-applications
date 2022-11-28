@@ -2,6 +2,18 @@
 
 _Copy this design recipe template to test-drive a Sinatra route._
 
+
+# Request:
+POST http://localhost:9292/sort-names
+
+# With body parameters:
+names=Joe,Alice,Zoe,Julia,Kieran
+
+# Expected response (sorted list of names):
+Alice,Joe,Julia,Kieran,Zoe
+
+
+
 ## 1. Design the Route Signature
 
 You'll need to include:
@@ -10,9 +22,10 @@ You'll need to include:
   * any query parameters (passed in the URL)
   * or body parameters (passed in the request body)
 
-the HTTP method: GET
-the path: /names
-query parameters (passed in the URL): names (string)
+the HTTP method: PUT
+the path: /sort-names (http://localhost:9292/sort-names)
+body parameters (passed in the request body): names (string)
+                                              names=Joe,Alice,Zoe,Julia,Kieran
 
 
 
@@ -28,12 +41,12 @@ Your response might return plain text, JSON, or HTML code.
 _Replace the below with your own design. Think of all the different possible responses your route will return._
 
 
-When query params = Julia,Mary,Karim
+When body params = Joe,Alice,Zoe,Julia,Kieran
 ```
-Julia, Mary, Karim
+Alice,Joe,Julia,Kieran,Zoe
 ```
 
-When query params = Andy,James,Lewis
+When query params = James,Lewis,Andy
 ```
 Andy, James, Lewis
 ```
@@ -64,19 +77,19 @@ _Replace these with your own design._
 ```
 # Request:
 
-GET /names?names=Julia,Mary,Karim
+GET /sort-names?names=Joe,Alice,Zoe,Julia,Kieran
 
 # Expected response:
 
 Response for 200 OK
 ```
-Julia, Mary, Karim
+Alice,Joe,Julia,Kieran,Zoe
 ```
 
 
 # Request:
 
-GET /names?names=Andy,James,Lewis
+GET /names?names=James,Lewis,Andy
 
 # Expected response:
 
@@ -88,7 +101,7 @@ Andy, James, Lewis
 
 # Request:
 
-GET /posts?id=276278
+GET /namesss?names=Test,One,Two
 
 # Expected response:
 
@@ -103,32 +116,32 @@ Response for 404 Not Found
 # EXAMPLE
 # file: spec/integration/application_spec.rb
 
-require "spec_helper"
+require 'spec_helper'
 
 describe Application do
   include Rack::Test::Methods
 
   let(:app) { Application.new }
 
-  context "GET /names" do
+  context 'POST /sort-names' do
     it 'returns 200 OK' do
       # Assuming the post with id 1 exists.
-      response = get('/names/?names=Julia,Mary,Karim')
+      response = post('/sort-names?names=Joe,Alice,Zoe,Julia,Kieran')
 
       expect(response.status).to eq(200)
-      expect(response.body).to eq("Julia, Mary, Karim")
+      expect(response.body).to eq('Alice, Joe, Julia, Kieran, Zoe')
     end
 
     it 'returns 200 OK' do
       # Assuming the post with id 1 exists.
-      response = get('/names/?names=Andy,James,Lewis')
+      response = post('/sort-names?names=James,Lewis,Andy')
 
       expect(response.status).to eq(200)
-      expect(response.body).to eq("Andy, James, Lewis")
+      expect(response.body).to eq('Andy, James, Lewis')
     end
 
     it 'returns 404 Not Found' do
-      response = get('/posts?id=276278')
+      response = post('/namesss?names=Test,One,Two')
 
       expect(response.status).to eq(404)
       # expect(response.body).to eq(expected_response)
