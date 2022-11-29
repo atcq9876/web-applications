@@ -23,7 +23,6 @@ describe Application do
   # class so our tests work.
   let(:app) { Application.new }
 
-
   context 'POST /albums' do
     it 'returns 200 OK and adds album to database' do
       response = post('/albums?title=Voyage&release_year=2022&artist_id=2')
@@ -57,6 +56,33 @@ describe Application do
 
     it 'returns 404 Not Found' do
       response = post('/albumsss')
+
+      expect(response.status).to eq(404)
+      # expect(response.body).to eq(expected_response)
+    end
+  end
+
+  context 'GET /artists' do
+    it 'returns 200 OK and a list of artists' do
+      response = get('/artists')
+
+      expect(response.status).to eq(200)
+      # expect(response.body).to eq('')
+
+      repo = ArtistRepository.new
+      artists = repo.all
+      
+      expect(artists.length).to eq 4
+      expect(artists.first.id).to eq 1
+      expect(artists.last.id).to eq 4
+      expect(artists.first.name).to eq 'Pixies'
+      expect(artists.last.name).to eq 'Nina Simone'
+      expect(artists.first.genre).to eq 'Rock'
+      expect(artists.last.genre).to eq 'Pop'    
+    end
+
+    it 'returns 404 Not Found' do
+      response = get('/artistsss')
 
       expect(response.status).to eq(404)
       # expect(response.body).to eq(expected_response)
