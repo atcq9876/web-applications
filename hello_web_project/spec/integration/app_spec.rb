@@ -58,4 +58,13 @@ describe Application do
       # expect(response.body).to eq(expected_response)
     end
   end
+
+  context 'GET /hello' do
+    it "returns 'Hello!' as an html heading" do
+      response = get('/hello')
+
+      expect(response.status).to eq(200)
+      expect(response.body).to include('<h1>Hello!</h1>')
+    end
+  end
 end
