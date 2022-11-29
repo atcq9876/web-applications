@@ -97,10 +97,10 @@ describe Application do
       expect(response.body).to eq('')
 
       response = get('/artists')
-      expect(response.body).to eq('Wild Nothing')
+      expect(response.body).to include('Wild Nothing')
     end
 
-    xit 'returns 200 OK and adds artist to database' do
+    it 'returns 200 OK and adds artist to database' do
       response = post(
         '/artists',
         name: 'Test',
@@ -110,10 +110,10 @@ describe Application do
       expect(response.body).to eq('')
 
       response = get('/artists')
-      expect(response.body).to eq('Test')
+      expect(response.body).to include('Test')
     end
 
-    xit 'returns 404 Not Found' do
+    it 'returns 404 Not Found' do
       response = post('/artistsss')
 
       expect(response.status).to eq(404)
