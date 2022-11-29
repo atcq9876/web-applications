@@ -141,10 +141,29 @@ describe Application do
     end
 
     it 'returns 404 Not Found' do
-      response = post('/albums/0')
+      response = get('/albumsss/1')
 
       expect(response.status).to eq(404)
       # expect(response.body).to eq(expected_response)
     end
+  end
+
+  context 'GET /albums' do
+    it 'returns a list of album titles with release_years in html format' do
+      response = get('/albums')
+
+      expect(response.status).to eq(200)
+      expect(response.body).to include('Title: Doolittle')
+      expect(response.body).to include('Released: 1989')
+      expect(response.body).to include('Title: Surfer Rosa')
+      expect(response.body).to include('Released: 1988')
+    end
+  end
+
+  it 'returns 404 Not Found' do
+    response = get('/albumsss')
+
+    expect(response.status).to eq(404)
+    # expect(response.body).to eq(expected_response)
   end
 end

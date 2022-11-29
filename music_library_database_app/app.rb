@@ -14,6 +14,13 @@ class Application < Sinatra::Base
     also_reload 'lib/artist_repository'
   end
 
+  get '/albums' do
+    album_repo = AlbumRepository.new
+    @albums = album_repo.all
+
+    return erb(:albums)
+  end
+
   get '/albums/:id' do
     id = params[:id]
 
