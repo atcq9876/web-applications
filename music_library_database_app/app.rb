@@ -15,14 +15,14 @@ class Application < Sinatra::Base
   end
 
   post '/albums' do
-    title = params[:title]
-    release_year = params[:release_year]
-    artist_id = params[:artist_id]
+    album = Album.new
+    album.title = params[:title]
+    album.release_year = params[:release_year]
+    album.artist_id = params[:artist_id]
     
-    sql = "INSERT INTO albums (title, release_year, artist_id) VALUES ($1, $2, $3)"
-    params = [title, release_year, artist_id]
-
-    DatabaseConnection.exec_params(sql, params)
+    albums = AlbumRepository.new
+    albums.create(album)
+    
     return nil
   end
 end
