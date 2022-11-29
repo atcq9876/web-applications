@@ -25,7 +25,11 @@ describe Application do
 
   context 'POST /albums' do
     it 'returns 200 OK and adds album to database' do
-      response = post('/albums?title=Voyage&release_year=2022&artist_id=2')
+      response = post(
+        '/albums',
+        title: 'Voyage',
+        release_year: '2022',
+        artist_id: '2')
 
       expect(response.status).to eq(200)
       # expect(response.body).to eq('')
@@ -40,7 +44,11 @@ describe Application do
     end
 
     it 'returns 200 OK and adds album to database' do
-      response = post('/albums?title=Indie%20Cindy&release_year=2014&artist_id=1')
+      response = post(
+        '/albums',
+        title: 'Indie Cindy',
+        release_year: '2014',
+        artist_id: '1')
 
       expect(response.status).to eq(200)
       # expect(response.body).to eq('')
@@ -63,7 +71,7 @@ describe Application do
   end
 
   context 'GET /artists' do
-    it 'returns 200 OK and a list of artists' do
+    xit 'returns 200 OK and a list of artists' do
       response = get('/artists')
 
       expect(response.status).to eq(200)
@@ -81,7 +89,7 @@ describe Application do
       expect(artists.last.genre).to eq 'Pop'    
     end
 
-    it 'returns 404 Not Found' do
+    xit 'returns 404 Not Found' do
       response = get('/artistsss')
 
       expect(response.status).to eq(404)
