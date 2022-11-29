@@ -112,18 +112,7 @@ describe Application do
       response = get('/artists')
 
       expect(response.status).to eq(200)
-      # expect(response.body).to eq('')
-
-      repo = ArtistRepository.new
-      artists = repo.all
-      
-      expect(artists.length).to eq 4
-      expect(artists.first.id).to eq 1
-      expect(artists.last.id).to eq 4
-      expect(artists.first.name).to eq 'Pixies'
-      expect(artists.last.name).to eq 'Nina Simone'
-      expect(artists.first.genre).to eq 'Rock'
-      expect(artists.last.genre).to eq 'Pop'    
+      expect(response.body).to eq('Pixies, ABBA, Taylor Swift, Nina Simone')
     end
 
     it 'returns 404 Not Found' do

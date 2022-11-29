@@ -20,9 +20,19 @@ class Application < Sinatra::Base
     album.release_year = params[:release_year]
     album.artist_id = params[:artist_id]
     
-    albums = AlbumRepository.new
-    albums.create(album)
-    
-    return nil
+    album_repo = AlbumRepository.new
+    album_repo.create(album)
+
+    return ''
+  end
+
+  get '/artists' do
+    artist_repo = ArtistRepository.new
+    artists = artist_repo.all
+    artist_names = []
+    artists.map do |artist|
+      artist_names << artist.name
+    end
+    return artist_names.join(', ')
   end
 end

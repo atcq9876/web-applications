@@ -32,7 +32,7 @@ describe Application do
         artist_id: '2')
 
       expect(response.status).to eq(200)
-      # expect(response.body).to eq('')
+      expect(response.body).to eq('')
 
       repo = AlbumRepository.new
       albums = repo.all
@@ -51,7 +51,7 @@ describe Application do
         artist_id: '1')
 
       expect(response.status).to eq(200)
-      # expect(response.body).to eq('')
+      expect(response.body).to eq('')
 
       repo = AlbumRepository.new
       albums = repo.all
@@ -71,26 +71,50 @@ describe Application do
   end
 
   context 'GET /artists' do
-    xit 'returns 200 OK and a list of artists' do
+    it 'returns 200 OK and a list of artists' do
       response = get('/artists')
 
       expect(response.status).to eq(200)
-      # expect(response.body).to eq('')
+      expect(response.body).to eq('Pixies, ABBA, Taylor Swift, Nina Simone')
+    end
 
-      repo = ArtistRepository.new
-      artists = repo.all
-      
-      expect(artists.length).to eq 4
-      expect(artists.first.id).to eq 1
-      expect(artists.last.id).to eq 4
-      expect(artists.first.name).to eq 'Pixies'
-      expect(artists.last.name).to eq 'Nina Simone'
-      expect(artists.first.genre).to eq 'Rock'
-      expect(artists.last.genre).to eq 'Pop'    
+    it 'returns 404 Not Found' do
+      response = get('/artistsss')
+
+      expect(response.status).to eq(404)
+      # expect(response.body).to eq(expected_response)
+    end
+  end
+
+  context 'POST /artists' do
+    it 'returns 200 OK and adds artist to database' do
+      response = post(
+        '/artists',
+        name: 'Wild Nothing',
+        genre: 'Indie')
+
+      expect(response.status).to eq(200)
+      expect(response.body).to eq('')
+
+      response = get('/artists')
+      expect(response.body).to eq('Wild Nothing')
+    end
+
+    xit 'returns 200 OK and adds artist to database' do
+      response = post(
+        '/artists',
+        name: 'Test',
+        genre: 'Electronic')
+
+      expect(response.status).to eq(200)
+      expect(response.body).to eq('')
+
+      response = get('/artists')
+      expect(response.body).to eq('Test')
     end
 
     xit 'returns 404 Not Found' do
-      response = get('/artistsss')
+      response = post('/artistsss')
 
       expect(response.status).to eq(404)
       # expect(response.body).to eq(expected_response)
