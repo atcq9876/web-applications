@@ -38,15 +38,24 @@ class Application < Sinatra::Base
   end
 
   post '/albums' do
-    album = Album.new
-    album.title = params[:title]
-    album.release_year = params[:release_year]
-    album.artist_id = params[:artist_id]
-    
-    album_repo = AlbumRepository.new
-    album_repo.create(album)
+    title = params[:title]
+    release_year = params[:release_year]
+    artist_id = params[:artist_id]
 
-    return ''
+    if title == nil || title == '' || release_year == nil || release_year == '' || artist_id == nil || artist_id == ''
+      status 400
+      return 'Please fill in all fields'
+    else
+      @album = Album.new
+      @album.title = title
+      @album.release_year = release_year
+      @album.artist_id = artist_id
+      
+      album_repo = AlbumRepository.new
+      album_repo.create(@album)
+      
+      return erb(:album_added)
+    end
   end
 
   get '/artists' do

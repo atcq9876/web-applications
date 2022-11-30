@@ -51,9 +51,9 @@ describe Application do
       expect(response.body).to include('<label>Album title: </label>')
       expect(response.body).to include('<input type="text" name="title" />')
       expect(response.body).to include('<label>Release year: </label>')
-      expect(response.body).to include('<input type="int" name="release_year" />')
+      expect(response.body).to include('<input type="number" name="release_year" />')
       expect(response.body).to include('<label>Artist ID: </label>')
-      expect(response.body).to include('<input type="int" name="artist_id" />')
+      expect(response.body).to include('<input type="number" name="artist_id" />')
     end
   end
 
@@ -85,49 +85,53 @@ describe Application do
   end
 
   context 'POST /albums' do
-    it 'returns 200 OK and adds album to database' do
-      response = post(
-        '/albums',
-        title: 'Voyage',
-        release_year: '2022',
-        artist_id: '2')
+    it 'adds new album to database and returns success message' do
+      response = post('/albums',
+      title: 'Trompe le Monde',
+      release_year: '1991',
+      artist_id: '1')
 
       expect(response.status).to eq(200)
-      expect(response.body).to eq('')
+      expect(response.body).to eq('<h2>You added the album: Trompe le Monde!</h2>')
 
-      repo = AlbumRepository.new
-      albums = repo.all
-      
-      expect(albums.last.id).to eq 13
-      expect(albums.last.title).to eq 'Voyage'
-      expect(albums.last.release_year).to eq '2022'
-      expect(albums.last.artist_id).to eq 2
-    end
-
-    it 'returns 200 OK and adds album to database' do
-      response = post(
-        '/albums',
-        title: 'Indie Cindy',
-        release_year: '2014',
-        artist_id: '1')
+      response = get('/albums')
 
       expect(response.status).to eq(200)
-      expect(response.body).to eq('')
-
-      repo = AlbumRepository.new
-      albums = repo.all
-      
-      expect(albums.last.id).to eq 13
-      expect(albums.last.title).to eq 'Indie Cindy'
-      expect(albums.last.release_year).to eq '2014'
-      expect(albums.last.artist_id).to eq 1
+      expect(response.body).to include('<a href="/albums/13">Trompe le Monde</a>')
     end
 
-    it 'returns 404 Not Found' do
-      response = post('/albumsss')
+    it 'adds a different album to database and returns success message' do
+      response = post('/albums',
+      title: 'Indie Cindy',
+      release_year: '2014',
+      artist_id: '1')
 
-      expect(response.status).to eq(404)
-      # expect(response.body).to eq(expected_response)
+      expect(response.status).to eq(200)
+      expect(response.body).to eq('<h2>You added the album: Indie Cindy!</h2>')
+
+      response = get('/albums')
+
+      expect(response.status).to eq(200)
+      expect(response.body).to include('<a href="/albums/13">Indie Cindy</a>')
+    end
+
+    it 'returns an error message when a field is not filled' do
+      response = post('/albums',
+      title: 'Trompe le Monde',
+      release_year: '1991',
+      artist_id: '')
+
+      expect(response.status).to eq(400)
+      expect(response.body).to eq('Please fill in all fields')    
+    end
+
+    it 'returns an error message when a field is not filled' do
+      response = post('/albums',
+      release_year: '1991',
+      artist_id: '1')
+
+      expect(response.status).to eq(400)
+      expect(response.body).to eq('Please fill in all fields')    
     end
   end
 
