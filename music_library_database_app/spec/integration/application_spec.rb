@@ -54,6 +54,7 @@ describe Application do
       expect(response.body).to include('<input type="number" name="release_year" />')
       expect(response.body).to include('<label>Artist ID: </label>')
       expect(response.body).to include('<input type="number" name="artist_id" />')
+      expect(response.body).to include('<input type="submit" />')
     end
   end
 
@@ -154,6 +155,21 @@ describe Application do
     end
   end
 
+  context "GET /artists/new" do
+    it "returns a form to add a new artist" do
+      response = get('artists/new')
+
+      expect(response.status).to eq(200)
+      expect(response.body).to include('<h1>Add an artist</h1>')
+      expect(response.body).to include('<form action="/artists" method="POST">')
+      expect(response.body).to include('<label>Artist name: </label>')
+      expect(response.body).to include('<input type="text" name="name" /><br>')
+      expect(response.body).to include('<label>Genre: </label')
+      expect(response.body).to include('<input type="text" name="genre" /><br>')
+      expect(response.body).to include('<input type="submit" />')
+    end
+  end
+
   context "GET /artists/:id" do
     it "returns info for the artist with the given id" do
       response = get('/artists/1')
@@ -187,23 +203,42 @@ describe Application do
         genre: 'Indie')
 
       expect(response.status).to eq(200)
-      expect(response.body).to eq('')
+      expect(response.body).to eq('<h2>You added the artist: Wild Nothing!</h2>')
 
       response = get('/artists')
       expect(response.body).to include('Wild Nothing')
     end
 
-    it 'returns 200 OK and adds artist to database' do
+    it 'returns 200 OK and adds other artist to database' do
       response = post(
         '/artists',
         name: 'Test',
         genre: 'Electronic')
 
       expect(response.status).to eq(200)
-      expect(response.body).to eq('')
+      expect(response.body).to eq('<h2>You added the artist: Test!</h2>')
 
       response = get('/artists')
       expect(response.body).to include('Test')
+    end
+
+    it 'returns 400 if invalid parameters' do
+      response = post(
+        '/artists',
+        name: '',
+        genre: 'Electronic')
+
+      expect(response.status).to eq(400)
+      expect(response.body).to eq('Please fill in all fields!')
+    end
+
+    it 'returns 400 if invalid parameters' do
+      response = post(
+        '/artists',
+        name: 'Band',)
+
+      expect(response.status).to eq(400)
+      expect(response.body).to eq('Please fill in all fields!')
     end
 
     it 'returns 404 Not Found' do

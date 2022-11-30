@@ -65,6 +65,10 @@ class Application < Sinatra::Base
     return erb(:artists)
   end
 
+  get '/artists/new' do
+    return erb(:artist_new)
+  end
+
   get '/artists/:id' do
     artist_repo = ArtistRepository.new
     @artist = artist_repo.find(params[:id])
@@ -73,13 +77,21 @@ class Application < Sinatra::Base
   end
 
   post '/artists' do
-    artist = Artist.new
-    artist.name = params[:name]
-    artist.genre = params[:genre]
-    
-    artist_repo = ArtistRepository.new
-    artist_repo.create(artist)
+    name = params[:name]
+    genre = params[:genre]
 
-    return ''
+    if name == nil || name == '' || genre == nil || genre == ''
+      status 400
+      return 'Please fill in all fields!'
+    else
+      @artist = Artist.new
+      @artist.name = name
+      @artist.genre = genre
+      
+      artist_repo = ArtistRepository.new
+      artist_repo.create(@artist)
+
+      return erb(:artist_added)
+    end
   end
 end
