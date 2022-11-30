@@ -21,6 +21,10 @@ class Application < Sinatra::Base
     return erb(:albums)
   end
 
+  get '/albums/new' do
+    return erb(:album_new)
+  end
+
   get '/albums/:id' do
     id = params[:id]
 

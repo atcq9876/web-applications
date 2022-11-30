@@ -41,6 +41,22 @@ describe Application do
     # expect(response.body).to eq(expected_response)
   end
 
+  context 'GET /albums/new' do
+    it 'returns a page with a form to add an album' do
+      response = get('/albums/new')
+
+      expect(response.status).to eq(200)
+      expect(response.body).to include('<h1>Add an album</h1>')
+      expect(response.body).to include('<form action="/albums" method="POST">')
+      expect(response.body).to include('<label>Album title: </label>')
+      expect(response.body).to include('<input type="text" name="title" />')
+      expect(response.body).to include('<label>Release year: </label>')
+      expect(response.body).to include('<input type="int" name="release_year" />')
+      expect(response.body).to include('<label>Artist ID: </label>')
+      expect(response.body).to include('<input type="int" name="artist_id" />')
+    end
+  end
+
   context 'GET /albums/:id' do
     it 'returns the albums with the given id' do
       response = get('/albums/1')
