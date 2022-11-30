@@ -16,27 +16,27 @@ describe Application do
 
       expect(response.status).to eq(200)
       expect(response.body).to include('<form action="/check" method="POST">')
-      expect(response.body).to include('<input type="text" name="postcode" />')
+      expect(response.body).to include('<input type="text" name="post_code" />')
     end
   end
 
-  context 'POST /check' do
+  context 'GET /check' do
     it 'should get valid postcode result' do
-      response = post('/check', postcode: 'EC1A 1BB')
+      response = get('/check', postcode: 'EC1A 1BB')
 
       expect(response.status).to eq(200)
       expect(response.body).to include('This is a valid postcode')
     end
 
     it 'should get invalid postcode result' do
-      response = post('/check', postcode: '37737 1BB')
+      response = get('/check', postcode: '37737 1BB')
 
       expect(response.status).to eq(200)
       expect(response.body).to include('This is not a valid postcode')
     end
 
     it 'should have a link to go back to the homepage' do
-      response = post('/check', postcode: 'EC1A 1BB')
+      response = get('/check', postcode: 'EC1A 1BB')
 
       expect(response.status).to eq(200)
       expect(response.body).to include('<a href="/">Back to the homepage</a>')
