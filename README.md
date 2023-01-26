@@ -1,4 +1,4 @@
-# ruby-web-applications
+# Ruby Web Applications
 
 This repo was made for the Ruby Web Applications module of the Makers bootcamp (week four). The objectives of this module were to:
 
