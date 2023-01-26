@@ -1,6 +1,6 @@
 # ruby-web-applications
 
-This repo was made for the Ruby web applications module of the Makers bootcamp (week four). The objectives of this module were to:
+This repo was made for the Ruby Web Applications module of the Makers bootcamp (week four). The objectives of this module were to:
 
 - Explain how HTTP requests and responses work at a high level
 - Write integration tests for a web application
